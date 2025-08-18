@@ -1,0 +1,14 @@
+Alient dictionary (Leetcode 269)
+
+Concepts: 
+    Topological sort, D
+    AG (Postoder DFS, BFS), 
+    Kahn’s Algorithm
+    Modified Kahn’s Algorithm
+
+Invalid solution: 
+    when there is cycle
+
+Multiple solutions: 
+    disconnected graphs
+
