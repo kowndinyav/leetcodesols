@@ -5,43 +5,25 @@
 
 var eraseOverlapIntervals = function(intervals) {
 
-    let originalLength = intervals.length;
+    intervals.sort((a,b) => a[1] - b[1])
 
-    function isOverlap(interval1, interval2) {
-        return interval1[1] > interval2[0] && interval1[0] < interval2[1];
-    }
+    let prevEnd = intervals[0][1]
+    let count = 0
 
-    function longerOrEqualInterval(interval1, interval2) {
-        return (interval1[1] - interval1[0]) >= (interval2[1] - interval2[0])  ;
-    }
+    for (let i = 1; i< intervals.length;i++){
 
-    function duplicateInterval(interval1, interval2) {
-        return interval1[0] === interval2[0] && interval1[1] === interval2[1];
-    }
-
-
-    let removeCount = 0;
-
-    for (let i = 0; i < intervals.length; i++) {
-        for (let j = i + 1; j < intervals.length; j++) {
-
-            if (duplicateInterval(intervals[i], intervals[j])) {
-                removeCount++;
-            }else{
-                if (isOverlap(intervals[i], intervals[j])) {
-                
-                    if (longerOrEqualInterval(intervals[i], intervals[j]) ) {
-                        intervals.splice(i, 1);
-                    } else {
-                        intervals.splice(j, 1);
-                    }
-                }
-            }
-            
+        if(intervals[i][0] < prevEnd){
+            // current start is < prev end
+            // and don't update prevEnd
+            count++
+        }else{
+            // in case intervals are not overlapping
+            // update prevEnd
+            prevEnd = intervals[i][1]
         }
     }
 
-    return originalLength - intervals.length;
+    return count
     
 };
 
