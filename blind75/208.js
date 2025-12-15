@@ -1,8 +1,8 @@
-
 var Trie = function() {
 
     this.root = {}
     this.root.val = "ROOT"
+    this.root.leaf = false
     this.root.children = []
     
 };
@@ -28,11 +28,13 @@ Trie.prototype.insert = function(word) {
         
         if(!found){
             // reached a level where the char is not found
-            let childNode = {"val": char, "children": []}
+            let childNode = {"val": char, "children": [], "leaf": false}
             node.children.push(childNode)
             node = childNode
         }
     }
+
+    node.leaf = true
     
 };
 
@@ -59,7 +61,7 @@ Trie.prototype.search = function(word) {
         }
     }
 
-    return node.children.length == 0
+    return node.leaf
 };
 
 /** 

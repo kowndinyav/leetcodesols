@@ -1,40 +1,43 @@
 var exist = function(board, word) {
+    
     let M = board.length
     let N = board[0].length
     let directions = [[-1,0],[1,0],[0,-1],[0,1]]
     let ret = false
-    let visited = new Set()
+    let visited = Array.from({length:M}, () => new Array(N).fill(false))
 
-    function CELL_KEY(i, j) {
-        return `${i}_${j}`;
-    }
+    function DFS(i, j, path, pathLength){
 
-    function DFS(i, j, I){
+        if(pathLength > word.length){
+            return false
+        }
 
-        if(I == word.length){
+        if(path == word){
             return true
         }
+        
+        visited[i][j] = true
 
-        if (i < 0 || j < 0 || i >= M || j >= N || board[i][j] !== word[I] || visited.has(CELL_KEY(i, j))) {
-            return false;
-        }
-
-        visited.add(CELL_KEY(i, j));
-
-        for ([dr, dc] of directions){
+        for (let [dr, dc] of directions){
             let nr = i + dr
             let nc = j + dc
-            if(DFS(nr, nc, I + 1)){
-                return true
+
+            if (nr >= 0 && nc >= 0 && nr < M && j < N && !visited[nr][nc]) {
+                if(DFS(nr, nc, path + board[nr][nc], pathLength + 1)){
+                    return true
+                }
             }
         }   
+        
+        visited[i][j] = false
 
         return false
+
     }
 
     for (let i = 0; i < M;i++){
         for (let j = 0; j < N;j++){
-            if (DFS(i, j, 0)){
+            if (board[i][j] === word[0] && DFS(i, j, "" + word[0], 1)){
                 ret = true
                 break
             }
@@ -42,6 +45,8 @@ var exist = function(board, word) {
     }
 
     return ret
+
+
 };
 
 console.log(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))

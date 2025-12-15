@@ -1,41 +1,67 @@
 var minWindow = function(s, t) {
 
-    function minWindowStarting(start){
+    function computeFreqMap(str){
+        
+        let freqMap = new Map()
+        
+        for (let i = 0; i < str.length; i++){
+            if(!freqMap.has(str[i])){
+                freqMap.set(str[i], 0)
+            }
+            freqMap.set(str[i], freqMap.get(str[i]) + 1)
+        }
+        return freqMap
+    }
 
-        let i = start
-        let j = 0
-        let window = 0
+    function compareFreqMap(freqMapSrc, freqMapTarget){
+        for (let [key, val] of freqMapTarget){
+            
+            if (!freqMapSrc.has(key)){
+                // if one of the expected char not found in the src map
+                return false
+            }
 
-        let windowStart = 0
-
-        while (i < s.length && j < t.length){
-
-            if (s[i] == t[j] && j == 0){
-                windowStart = i
-                window++ //start
-                i++
-                j++
-            }else if(s[i] != t[j] && window > 0){
-                window++ // non start,  non matches
-                i++
-            }else if(s[i] == t[j]){
-                window++ // non start,  non matches
-                i++
-                j++
+            if(freqMapSrc.get(key) < val){
+                return false
             }
         }
+        return true
+    }
 
-        if (j == t.length){
-            return {"start": windowStart, "end": i}
+    function validateSubString(src, left, right, freqMapTarget){
+        
+        let freqMapSrc = new Map()
+        
+        for (let i = left; i <= right; i++){
+            
+            if(!freqMapSrc.has(src[i])){
+                freqMapSrc.set(src[i], 0)
+            }
+            freqMapSrc.set(src[i], freqMapSrc.get(src[i]) + 1)
         }
 
-        return {}
+        
+        return compareFreqMap(freqMapSrc, freqMapTarget)
     }
-  
-    for(let i = 0;i<s.length;i++){
-        let w = minWindowStarting(i)
-        console.log(w)
+
+    let t_freqMap = computeFreqMap(t)
+
+    let minWindowSize = Number.MAX_SAFE_INTEGER
+    let window = []
+
+    for (let i=0;i<s.length;i++){
+        for (let j=i+t.length-1; j < s.length;j++){
+            if (validateSubString(s, i, j, t_freqMap)){
+                // if t is found in s and if the window size is less than minWindowSize
+                if ((j - i + 1) < minWindowSize){
+                    window = [i, j]
+                    minWindowSize = j - i + 1
+                }
+            }
+        }
     }
+
+    return window.length === 0 ? "" : s.slice(window[0], window[1] + 1)
 
 };
 

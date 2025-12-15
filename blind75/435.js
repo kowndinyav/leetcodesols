@@ -1,29 +1,17 @@
+// #435
+// Non-overlapping Intervals
+// Tags: Intervals
 
+/*
+Given an array of intervals intervals where intervals[i] = [starti, endi], return the minimum number of intervals you need 
+to remove to make the rest of the intervals non-overlapping.
 
+Note that intervals which only touch at a point are non-overlapping. For example, [1, 2] and [2, 3] are non-overlapping.
 
-
-
+*/
 var eraseOverlapIntervals = function(intervals) {
 
-    intervals.sort((a,b) => a[1] - b[1])
-
-    let prevEnd = intervals[0][1]
-    let count = 0
-
-    for (let i = 1; i< intervals.length;i++){
-
-        if(intervals[i][0] < prevEnd){
-            // current start is < prev end
-            // and don't update prevEnd
-            count++
-        }else{
-            // in case intervals are not overlapping
-            // update prevEnd
-            prevEnd = intervals[i][1]
-        }
-    }
-
-    return count
+    
     
 };
 

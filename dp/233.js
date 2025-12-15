@@ -1,0 +1,4 @@
+var countDigitOne = function(n) {
+
+    
+};

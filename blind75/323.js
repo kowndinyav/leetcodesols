@@ -40,7 +40,6 @@ var countComponents = function(n, edges) {
     }
 
 
-
     for ([v1, v2] of edges){
         graph.get(v1).push(v2)
         graph.get(v2).push(v1)

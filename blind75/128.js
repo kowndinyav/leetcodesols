@@ -2,27 +2,27 @@
 var longestConsecutive = function(nums) {
 
     let hashset = new Set(nums)
+    let max = 0
 
-    let longestSeqLength = 0
+    let visited = new Set()
 
     for (let num of hashset){
 
-        if(!hashset.has(num - 1)){ // searching for number less than current number (looking for sneak's head)
-            // means we found snake's head
+        // check the current num is the smallest
+        if (!hashset.has(num - 1) && !visited.has(num)){
 
-            // now follow till tail
-            
-            let seqLength = 1 // account for head
-            while (hashset.has(num + 1)){
-                seqLength++
+            let count = 1
+            while (hashset.has(num+1)){
+                visited.add(num + 1)
+                count++
                 num++
             }
 
-            longestSeqLength = Math.max(seqLength, longestSeqLength)
+            max = Math.max(count, max)
         }
-
     }
-    return longestSeqLength;    
+
+    return max
 }
 
 console.log(longestConsecutive([100,4,200,1,3,2]))
